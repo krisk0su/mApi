@@ -12,6 +12,7 @@ const app: express.Application = express();
 app.use(express.json());
 app.use(cors());
 app.use("/movies", router);
+
 app.get("/", function (req, res) {
   res.send("hello world");
 });
