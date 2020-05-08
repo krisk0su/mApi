@@ -15,11 +15,14 @@ router.get("/:id", async (req, res) => {
 });
 router.post("/create", async (req, res) => {
   try {
+    console.log("req", req.body);
     const movie: IMovie = await createMovie(req.body);
+    console.log("movie", movie);
     res
       .status(200)
       .json({ msg: "movie created succesfully", movieId: movie._id });
   } catch (err) {
+    console.log("err", err);
     res.status(400).send(`error -> ${err}`);
   }
 });
