@@ -8,6 +8,7 @@ export interface IMovie extends Document {
   genre: string[];
   actors: string[];
   poster: string;
+  trailer: string;
   link1: string;
   link2?: string;
   link3?: string;
@@ -20,6 +21,7 @@ const MovieSchema: Schema = new Schema({
   genre: { type: [String], required: true },
   actors: { type: [String], required: true },
   poster: { type: String, required: true },
+  trailer: { type: String, required: true },
   link1: { type: String, required: true },
   link2: { type: String, required: false },
   link3: { type: String, required: false },
