@@ -2,6 +2,8 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import { router } from "./API/Movies";
+import { getAllGenres } from "./Services/GenreService";
+
 mongoose.connect(
   "mongodb+srv://krisk0su:Krizk0tak3n@movies-h5gox.mongodb.net/Movies?retryWrites=true&w=majority",
   { useNewUrlParser: true, useUnifiedTopology: true }
@@ -12,7 +14,10 @@ const app: express.Application = express();
 app.use(express.json());
 app.use(cors());
 app.use("/movies", router);
-
+app.get("/genres", async (req, res) => {
+  const genres = await getAllGenres();
+  res.send(genres)
+})
 app.get("/", function (req, res) {
   res.send("hello world");
 });

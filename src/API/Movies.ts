@@ -4,9 +4,15 @@ import { createMovie } from "../Services/MoviesService";
 export const router = express.Router();
 
 router.get("/all", async (req, res) => {
+  console.log("body", req.body)
   const movies: IMovie[] = await Movie.find().where("");
   //{ genre: "5ebd224cb19a5613f0d9659a" }
-  console.log("movuies", movies);
+  //.skip(0).limit(10);
+  res.send(movies);
+});
+router.post("/all", async (req, res) => {
+  const movies: IMovie[] = await Movie.find();
+  //{ genre: "5ebd224cb19a5613f0d9659a" }
   //.skip(0).limit(10);
   res.send(movies);
 });
