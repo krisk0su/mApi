@@ -1,11 +1,11 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document, Types } from "mongoose";
 
 export interface IMovie extends Document {
   _id: string;
   title: string;
   plot: string;
   year: number;
-  genre: string[];
+  genre: string;
   actors: string[];
   poster: string;
   trailer: string;
@@ -18,7 +18,7 @@ const MovieSchema: Schema = new Schema({
   title: { type: String, required: true },
   plot: { type: String, required: true },
   year: { type: Number, required: true },
-  genre: { type: [String], required: true },
+  genre: { type: [Schema.Types.ObjectId], ref: "Genre", required: true },
   actors: { type: [String], required: true },
   poster: { type: String, required: true },
   trailer: { type: String, required: true },
