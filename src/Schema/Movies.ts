@@ -19,6 +19,7 @@ const MovieSchema: Schema = new Schema({
   plot: { type: String, required: true },
   year: { type: Number, required: true },
   genre: { type: [Schema.Types.ObjectId], ref: "Genre", required: true },
+  rating: { type: Number, required: true },
   actors: { type: [String], required: true },
   poster: { type: String, required: true },
   trailer: { type: String, required: true },

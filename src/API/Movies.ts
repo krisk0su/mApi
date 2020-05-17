@@ -1,11 +1,11 @@
 import express from "express";
 import { Movie, IMovie } from "../Schema/Movies";
 import { createMovie } from "../Services/MoviesService";
-export const router = express.Router();
+export const MoviesRouter = express.Router();
 const pageSize = 20;
 
 try {
-  router.post("/search", async (req, res) => {
+  MoviesRouter.post("/search", async (req, res) => {
     console.log("body", req.body);
     const { currentPage, searchPhrase } = req.body;
     const take = currentPage * pageSize;
@@ -23,7 +23,7 @@ try {
       .limit(pageSize);
     res.status(200).send({ movies, totalPages });
   });
-  router.post("/genre", async (req, res) => {
+  MoviesRouter.post("/genre", async (req, res) => {
     console.log("genre", req.body);
     const { currentPage, genre } = req.body;
     const take = currentPage * pageSize;
@@ -40,7 +40,7 @@ try {
       .limit(pageSize);
     res.status(200).send({ movies, totalPages });
   });
-  router.post("/all", async (req, res) => {
+  MoviesRouter.post("/all", async (req, res) => {
     const { currentPage } = req.body;
     const take = currentPage * pageSize;
     const skip = take - pageSize;
@@ -50,12 +50,12 @@ try {
     const movies: IMovie[] = await Movie.find().skip(skip).limit(pageSize);
     res.status(200).send({ movies, totalPages });
   });
-  router.get("/:id", async (req, res) => {
+  MoviesRouter.get("/:id", async (req, res) => {
     const id = req.params.id;
     const movie: IMovie = await Movie.findById(id);
     res.send(movie);
   });
-  router.post("/create", async (req, res) => {
+  MoviesRouter.post("/create", async (req, res) => {
     try {
       //console.log("req", req.body);
       const movie: IMovie = await createMovie(req.body);

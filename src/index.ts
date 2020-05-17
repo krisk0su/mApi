@@ -1,7 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import { router } from "./API/Movies";
+import { MoviesRouter } from "./API/Movies";
+import { UsersRouter } from "./API/Users";
 import { getAllGenres } from "./Services/GenreService";
 
 mongoose.connect(
@@ -13,11 +14,12 @@ mongoose.connect(
 const app: express.Application = express();
 app.use(express.json());
 app.use(cors());
-app.use("/movies", router);
+app.use("/movies", MoviesRouter);
+app.use("/users", UsersRouter);
 app.get("/genres", async (req, res) => {
   const genres = await getAllGenres();
-  res.send(genres)
-})
+  res.send(genres);
+});
 app.get("/", function (req, res) {
   res.send("hello world");
 });
