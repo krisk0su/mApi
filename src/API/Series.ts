@@ -7,8 +7,8 @@ export const SeriesRouter = express.Router();
 try {
   SeriesRouter.post("/create", async (req, res) => {
     try {
-      const serie = await CreateSerie(req.body);
-      res.status(200).json({ msg: "serie created succesfully" });
+      const serie: ISerie = await CreateSerie(req.body);
+      res.status(200).json(serie);
     } catch (err) {
       console.log("err", err);
       res.status(400).send(`error -> ${err}`);
@@ -32,4 +32,5 @@ const CreateSerie = async (serie: ISerie) => {
     genre,
   });
   const res = await cSerie.save();
+  return res;
 };
