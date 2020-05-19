@@ -32,6 +32,7 @@ try {
     const count = await Movie.find({
       genre,
     }).countDocuments();
+
     const totalPages = Math.ceil(count / pageSize);
     const movies: IMovie[] = await Movie.find({
       genre,
@@ -71,19 +72,3 @@ try {
 } catch (err) {
   console.log(err);
 }
-
-// if (sType === "search") {
-//   res.status(200).send({ movies: [], totalPages: 0 });
-// } else if (sType === "genre") {
-//   const { genre } = req.body;
-//   const count = await Movie.find({ genre }).countDocuments();
-//   const totalPages = Math.ceil(count / pageSize);
-//   const movies: IMovie[] = await Movie.find({ genre })
-//     .skip(skip)
-//     .limit(pageSize);
-//   res.status(200).send({ movies, totalPages });
-// } else if (sType === "normal") {
-
-// } else {
-//   res.status(200).send({ movies: [], totalPages: 0 });
-// }

@@ -1,21 +1,5 @@
-import { IMovie, Movie } from "../Schema/Movies";
+import { Genre, IGenre } from "../../Schema/Genre";
 import mongoose from "mongoose";
-import { Genre, IGenre } from "../Schema/Genre";
-
-export const createMovie = async (movie: IMovie) => {
-  const genre: string[] = await getGenre(movie.genre);
-
-  const cMovie = new Movie({
-    _id: mongoose.Types.ObjectId(),
-    ...movie,
-    genre,
-  });
-
-  //try catch
-  const res = await cMovie.save();
-  return res;
-};
-
 export const getGenre = async (genre: string) => {
   //getting all genres by splitting ,
   const genres: string[] = genre
