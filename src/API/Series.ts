@@ -1,7 +1,7 @@
 import express from "express";
 import { ISerie, Serie } from "../Schema/Series/Serie";
 import mongoose from "mongoose";
-import { getGenre } from "./lib/universal";
+import { getGenre } from "../lib/universal";
 export const SeriesRouter = express.Router();
 
 try {

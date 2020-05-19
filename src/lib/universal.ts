@@ -1,11 +1,6 @@
-import { Genre, IGenre } from "../../Schema/Genre";
+import { IGenre, Genre } from "../Schema/Genre";
 import mongoose from "mongoose";
-export const getGenre = async (genre: string) => {
-  //getting all genres by splitting ,
-  const genres: string[] = genre
-    .split(",")
-    .map((genre: string) => genre.trim());
-
+export const getGenre = async (genres: string[]) => {
   const genreIds: string[] = await Promise.all(
     genres.map(async (name: string) => {
       const genre = await getOrCreateGenre(name);
@@ -15,7 +10,6 @@ export const getGenre = async (genre: string) => {
 
   return genreIds;
 };
-
 const getOrCreateGenre = async (name: string) => {
   const res: IGenre = await Genre.findOne({ name });
   //if res is null create it
