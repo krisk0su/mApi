@@ -8,12 +8,12 @@ export interface ISerie extends Document {
   genre: string[];
   actors: string[];
   poster: string;
-  trailer: string;
   season: string[];
-  rating: string;
+  rating: number;
+  //trailer: string;
 }
 const SerieSchema: Schema = new Schema({
-  _id: mongoose.Types.ObjectId,
+  _id: { type: mongoose.Types.ObjectId, required: true },
   title: { type: String, required: true },
   plot: { type: String, required: true },
   year: { type: Number, required: true },
@@ -21,8 +21,8 @@ const SerieSchema: Schema = new Schema({
   rating: { type: Number, required: true },
   actors: { type: [String], required: true },
   poster: { type: String, required: true },
-  trailer: { type: String, required: true },
   seasons: { type: [Schema.Types.ObjectId], ref: "Season", required: false },
+  //trailer: { type: String, required: true },
 });
 
 export const Serie = mongoose.model<ISerie>("Serie", SerieSchema);

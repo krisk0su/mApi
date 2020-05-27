@@ -1,6 +1,8 @@
 import { IGenre, Genre } from "../Schema/Genre";
 import mongoose from "mongoose";
-export const getGenre = async (genres: string[]) => {
+
+export const getGenre = async (genre: string) => {
+  const genres = genre.split(",").map((gen: string) => gen.trim());
   const genreIds: string[] = await Promise.all(
     genres.map(async (name: string) => {
       const genre = await getOrCreateGenre(name);

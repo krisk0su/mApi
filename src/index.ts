@@ -15,8 +15,9 @@ mongoose.connect(
 const app: express.Application = express();
 app.use(express.json());
 app.use(cors());
-app.use("/movies", MoviesRouter);
 app.use("/series", SeriesRouter);
+app.use("/movies", MoviesRouter);
+
 app.use("/users", UsersRouter);
 app.get("/genres", async (req, res) => {
   const genres = await getAllGenres();
