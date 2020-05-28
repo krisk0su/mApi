@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
+import { ISeason } from "./Season";
 
 export interface ISerie extends Document {
   _id: string;
@@ -8,9 +9,8 @@ export interface ISerie extends Document {
   genre: string[];
   actors: string[];
   poster: string;
-  season: string[];
+  seasons: ISeason[];
   rating: number;
-  //trailer: string;
 }
 const SerieSchema: Schema = new Schema({
   _id: { type: mongoose.Types.ObjectId, required: true },
@@ -21,8 +21,7 @@ const SerieSchema: Schema = new Schema({
   rating: { type: Number, required: true },
   actors: { type: [String], required: true },
   poster: { type: String, required: true },
-  seasons: { type: [Schema.Types.ObjectId], ref: "Season", required: false },
-  //trailer: { type: String, required: true },
+  seasons: [{ type: Schema.Types.ObjectId, ref: "Season", required: false }],
 });
 
 export const Serie = mongoose.model<ISerie>("Serie", SerieSchema);
