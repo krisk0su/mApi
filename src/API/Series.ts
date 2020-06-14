@@ -4,8 +4,8 @@ import mongoose from "mongoose";
 import { getGenre } from "../lib/universal";
 import { ISerieRequest } from "../Request/ISerieRequest";
 import { Season, ISeason } from "../Schema/Series/Season";
-import { createServer } from "https";
 export const SeriesRouter = express.Router();
+const pageSize = 20;
 
 try {
   SeriesRouter.post("/create", async (req, res) => {
@@ -16,26 +16,33 @@ try {
   });
 
   SeriesRouter.get("/:id", async (req, res) => {
+    console.log("req", req.params);
     const id = req.params.id;
     const serie: ISerie = await Serie.findById(id).populate("seasons");
     console.log("serie", serie);
     res.status(200).send(serie);
   });
+
+  SeriesRouter.post("/all", async (req, res) => {
+    console.log("body", req.body);
+    const { currentPage } = req.body;
+
+    const take = currentPage * pageSize;
+    const skip = take - pageSize;
+
+    const count = await Serie.find().countDocuments();
+    const totalPages = Math.ceil(count / pageSize);
+    const series: ISerie[] = await Serie.find().skip(skip).limit(pageSize);
+    res.status(200).send({ series, totalPages });
+  });
 } catch (err) {
   console.log("err", err);
 }
-const CreateSeasons = async (seasons: number) => {
-  let seasonArr: ISeason[] = [];
-  for (let i = 0; i < seasons; i++) {
-    const season: ISeason = new Season({
-      _id: mongoose.Types.ObjectId(),
-      name: `Season ${i + 1}`,
-    });
-    const res = await season.save();
-    seasonArr.push(res);
-  }
-  return seasonArr;
-};
+/**
+ *
+ * @param serie
+ * while creating serie seasons are automatically generated
+ */
 const CreateSerie = async (serie: ISerieRequest) => {
   const genre: string[] = await getGenre(serie.genre);
   const seasons: ISeason[] = await CreateSeasons(serie.seasons);
@@ -47,4 +54,17 @@ const CreateSerie = async (serie: ISerieRequest) => {
   });
   const res = await cSerie.save();
   return res;
+};
+//seasons creation
+const CreateSeasons = async (seasons: number) => {
+  let seasonArr: ISeason[] = [];
+  for (let i = 0; i < seasons; i++) {
+    const season: ISeason = new Season({
+      _id: mongoose.Types.ObjectId(),
+      name: `Season ${i + 1}`,
+    });
+    const res = await season.save();
+    seasonArr.push(res);
+  }
+  return seasonArr;
 };

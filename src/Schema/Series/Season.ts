@@ -1,9 +1,10 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
+import { IEpisode } from "./Episode";
 
 export interface ISeason extends Document {
   id: string;
   name: string;
-  episodes: string[];
+  episodes: IEpisode[];
 }
 const SeasonSchema: Schema = new Schema({
   id: mongoose.Types.ObjectId,

@@ -14,6 +14,7 @@ try {
     const count = await Movie.find({
       title: { $regex: `${searchPhrase}`, $options: "i" },
     }).countDocuments();
+
     console.log("count", count);
     const totalPages = Math.ceil(count / pageSize);
     const movies: IMovie[] = await Movie.find({
@@ -53,6 +54,7 @@ try {
   });
   MoviesRouter.get("/:id", async (req, res) => {
     const id = req.params.id;
+    console.log("id", id);
     const movie: IMovie = await Movie.findById(id);
     res.send(movie);
   });

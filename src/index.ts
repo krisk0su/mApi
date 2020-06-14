@@ -26,6 +26,6 @@ app.get("/genres", async (req, res) => {
 app.get("/", function (req, res) {
   res.send("hello world");
 });
-app.listen(5000, function () {
+app.listen(3000, function () {
   console.log("App is listening on port 5000!");
 });
