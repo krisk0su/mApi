@@ -1,9 +1,11 @@
-import express from "express";
 import { ISerie, Serie } from "../Schema/Series/Serie";
-import mongoose from "mongoose";
 import { getGenre } from "../lib/universal";
 import { ISerieRequest } from "../Request/ISerieRequest";
 import { Season, ISeason } from "../Schema/Series/Season";
+
+import express from "express";
+import mongoose from "mongoose";
+
 export const SeriesRouter = express.Router();
 const pageSize = 20;
 
@@ -34,6 +36,14 @@ try {
     const totalPages = Math.ceil(count / pageSize);
     const series: ISerie[] = await Serie.find().skip(skip).limit(pageSize);
     res.status(200).send({ series, totalPages });
+  });
+
+  SeriesRouter.get("/season/:id", async (req, res) => {
+    const id = req.params.id;
+
+    const season: ISeason = await Season.findById(id).populate("episodes");
+
+    res.status(200).send(season);
   });
 } catch (err) {
   console.log("err", err);
