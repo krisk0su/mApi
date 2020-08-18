@@ -5,6 +5,7 @@ import { Season, ISeason } from "../Schema/Series/Season";
 
 import express from "express";
 import mongoose from "mongoose";
+import { IEpisode, Episode } from "../Schema/Series/Episode";
 
 export const SeriesRouter = express.Router();
 const pageSize = 20;
@@ -38,11 +39,27 @@ try {
     res.status(200).send({ series, totalPages });
   });
 
+  SeriesRouter.post("/episode", async (req, res) => {
+    const reqEpisode = req.body;
+    const episode: IEpisode = new Episode({
+      _id: mongoose.Types.ObjectId(),
+      name: reqEpisode.name,
+      link: reqEpisode.link,
+    });
+    const savedEpisode = await episode.save();
+    console.log("savedEpisode", savedEpisode);
+    const currentSeason = await Season.findById(reqEpisode.seasonId);
+    console.log("currentSeason", currentSeason);
+    currentSeason.episodes.push(savedEpisode);
+    const savedSeason = await currentSeason.save();
+    console.log("savedSeason", savedSeason);
+    res.status(200).send(true);
+  });
   SeriesRouter.get("/season/:id", async (req, res) => {
     const id = req.params.id;
 
     const season: ISeason = await Season.findById(id).populate("episodes");
-
+    console.log("season", season);
     res.status(200).send(season);
   });
 } catch (err) {
