@@ -41,25 +41,23 @@ try {
 
   SeriesRouter.post("/episode", async (req, res) => {
     const reqEpisode = req.body;
+    console.log("episode", reqEpisode);
     const episode: IEpisode = new Episode({
       _id: mongoose.Types.ObjectId(),
       name: reqEpisode.name,
       link: reqEpisode.link,
+      parent: reqEpisode.seasonId,
     });
     const savedEpisode = await episode.save();
-    console.log("savedEpisode", savedEpisode);
     const currentSeason = await Season.findById(reqEpisode.seasonId);
-    console.log("currentSeason", currentSeason);
     currentSeason.episodes.push(savedEpisode);
     const savedSeason = await currentSeason.save();
-    console.log("savedSeason", savedSeason);
     res.status(200).send(true);
   });
   SeriesRouter.get("/season/:id", async (req, res) => {
     const id = req.params.id;
 
     const season: ISeason = await Season.findById(id).populate("episodes");
-    console.log("season", season);
     res.status(200).send(season);
   });
 } catch (err) {
@@ -72,23 +70,24 @@ try {
  */
 const CreateSerie = async (serie: ISerieRequest) => {
   const genre: string[] = await getGenre(serie.genre);
-  const seasons: ISeason[] = await CreateSeasons(serie.seasons);
   const cSerie: ISerie = new Serie({
     _id: mongoose.Types.ObjectId(),
     ...serie,
     genre,
-    seasons,
   });
+  const seasons: ISeason[] = await CreateSeasons(serie.seasons, cSerie._id);
+  cSerie.seasons = seasons;
   const res = await cSerie.save();
   return res;
 };
 //seasons creation
-const CreateSeasons = async (seasons: number) => {
+const CreateSeasons = async (seasons: number, serieId: string) => {
   let seasonArr: ISeason[] = [];
   for (let i = 0; i < seasons; i++) {
     const season: ISeason = new Season({
       _id: mongoose.Types.ObjectId(),
       name: `Season ${i + 1}`,
+      parent: serieId,
     });
     const res = await season.save();
     seasonArr.push(res);
