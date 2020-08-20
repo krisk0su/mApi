@@ -54,6 +54,12 @@ try {
     const savedSeason = await currentSeason.save();
     res.status(200).send(true);
   });
+  SeriesRouter.get("/episode/:id", async (req, res) => {
+    const id = req.params.id;
+
+    const season: IEpisode = await Episode.findById(id).populate("parent");
+    res.status(200).send(season);
+  });
   SeriesRouter.get("/season/:id", async (req, res) => {
     const id = req.params.id;
 
